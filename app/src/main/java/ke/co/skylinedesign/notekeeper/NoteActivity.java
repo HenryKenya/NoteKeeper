@@ -18,6 +18,7 @@ import java.util.List;
 public class NoteActivity extends AppCompatActivity {
     public static final String NOTE_INFO = "package ke.co.skylinedesign.notekeeper.NOTE_INFO";
     private NoteInfo note;
+    private boolean isNewNote;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,15 +46,15 @@ public class NoteActivity extends AppCompatActivity {
 
         EditText textNoteTitle = findViewById(R.id.text_note_title);
         EditText textNoteText = findViewById(R.id.text_note_text);
-
-        displayNote(spinnerCourses, textNoteTitle, textNoteText);
+        if (!isNewNote)
+            displayNote(spinnerCourses, textNoteTitle, textNoteText);
     }
 
     private void displayNote(Spinner spinnerCourses, EditText textNoteTitle, EditText textNoteText) {
 
         List<CourseInfo> courses = DataManager.getInstance().getCourses();
         int courseIndex = courses.indexOf(note.getCourse());
-        
+
         spinnerCourses.setSelection(courseIndex);
         textNoteTitle.setText(note.getTitle());
         textNoteText.setText(note.getText());
@@ -62,6 +63,7 @@ public class NoteActivity extends AppCompatActivity {
     private void readDisplayStateValues() {
         Intent intent = getIntent();
         note = intent.getParcelableExtra(NOTE_INFO);
+        isNewNote = note == null;
     }
 
     @Override

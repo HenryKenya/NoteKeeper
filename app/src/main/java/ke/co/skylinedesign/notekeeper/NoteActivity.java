@@ -14,7 +14,7 @@ import android.widget.Spinner;
 import java.util.List;
 
 public class NoteActivity extends AppCompatActivity {
-
+    public static final String NOTE_INFO = "package ke.co.skylinedesign.notekeeper.NOTE_INFO";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,8 +36,7 @@ public class NoteActivity extends AppCompatActivity {
 
         // set adapter
         spinnerCourses.setAdapter(adapterCourses);
-
-
+        
     }
 
     @Override

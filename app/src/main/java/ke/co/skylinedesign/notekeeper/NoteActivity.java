@@ -2,11 +2,8 @@ package ke.co.skylinedesign.notekeeper;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -16,7 +13,8 @@ import android.widget.Spinner;
 import java.util.List;
 
 public class NoteActivity extends AppCompatActivity {
-    public static final String NOTE_INFO = "package ke.co.skylinedesign.notekeeper.NOTE_INFO";
+    public static final String NOTE_POSITION = "package ke.co.skylinedesign.notekeeper.NOTE_POSITION";
+    public static final int POSITION_NOT_SET = -1;
     private NoteInfo note;
     private boolean isNewNote;
 
@@ -50,6 +48,18 @@ public class NoteActivity extends AppCompatActivity {
             displayNote(spinnerCourses, textNoteTitle, textNoteText);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveNote();
+
+    }
+
+    private void saveNote() {
+        // set value of course in spinner
+
+    }
+
     private void displayNote(Spinner spinnerCourses, EditText textNoteTitle, EditText textNoteText) {
 
         List<CourseInfo> courses = DataManager.getInstance().getCourses();
@@ -62,8 +72,10 @@ public class NoteActivity extends AppCompatActivity {
 
     private void readDisplayStateValues() {
         Intent intent = getIntent();
-        note = intent.getParcelableExtra(NOTE_INFO);
-        isNewNote = note == null;
+        int position = intent.getIntExtra(NOTE_POSITION, POSITION_NOT_SET);
+        isNewNote = position == POSITION_NOT_SET;
+        if (!isNewNote)
+            note = DataManager.getInstance().getNotes().get(position);
     }
 
     @Override
@@ -72,6 +84,7 @@ public class NoteActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
